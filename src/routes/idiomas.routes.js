@@ -10,6 +10,14 @@ idiomasRoutes.get("/", (req, res) => {
         message: idiomas.length == 0 ? "Não há idiomas cadastrados" : `Total de idiomas: ${idiomas.length}`, idiomas,
     });
 });
+idiomasRoutes.post("/", (req, res) => {
+    const { idioma, progresso, nivel, dificuldade } = req.body;
+    const newLanguage = languagesList.addLanguage(idioma, progresso, nivel, dificuldade);
+    return res.status(201).json({
+        message: "Idioma cadastrado com sucesso!", 
+        newLanguage,
+    });
+});
 
 
 
