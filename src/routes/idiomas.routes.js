@@ -10,12 +10,39 @@ idiomasRoutes.get("/", (req, res) => {
         message: idiomas.length == 0 ? "Não há idiomas cadastrados" : `Total de idiomas: ${idiomas.length}`, idiomas,
     });
 });
+
 idiomasRoutes.post("/", (req, res) => {
     const { idioma, progresso, nivel, dificuldade } = req.body;
+
+    if (!idioma) {
+        return res.status(400).json({
+            message: "O campo idioma é obrigatório!",
+        });
+    }
+
+    if (!progresso) {
+        return res.status(400).json({
+            message: "O campo progresso é obrigatório!",
+        });
+    }
+
+    if ( nivel != "iniciante" && nivel != "intermediário" && nivel != "avançado") {
+        return res.status(400).send({
+            message: "Digite 'iniciante', 'intermediário' ou 'avançado' como nível",
+        });
+    }
+
+    if(dificuldade.length < 2) {
+        return res.status(400).json({
+            message: "Digite duas dificuldades ou mais",
+        });
+    }
+
     const newLanguage = languagesList.addLanguage(idioma, progresso, nivel, dificuldade);
     return res.status(201).json({
         message: "Idioma cadastrado com sucesso!", 
         newLanguage,
+        
     });
 });
 
